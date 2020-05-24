@@ -59,8 +59,8 @@ func rectsHandler(w http.ResponseWriter, r *http.Request) {
 	rects := make([]quadtree.Boundary_json, 0)
 
 	for _, qt := range rootQT.All() {
-		aabb := qt.GetBoundary()
-		rects = append(rects, aabb.GetJSON())
+		boundary := qt.GetBoundary()
+		rects = append(rects, boundary.GetJSON())
 	}
 
 	output, err := json.MarshalIndent(&rects, "", "\t")
