@@ -41,7 +41,7 @@ func init() {
 			x, _ := strconv.ParseFloat(record[2], 64)
 			y, _ := strconv.ParseFloat(record[1], 64)
 			i, _ := strconv.ParseInt(record[0], 10, 64)
-			rootQT.Insert(quadtree.XY{X: x, Y: y, I: i})
+			rootQT.Insert(quadtree.Point{X: x, Y: y, I: i})
 		}
 	}
 

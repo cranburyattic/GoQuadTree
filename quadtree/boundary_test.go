@@ -12,7 +12,7 @@ func Test_aabb_ContainsPoint(t *testing.T) {
 		h float64
 	}
 	type args struct {
-		point XY
+		point Point
 	}
 	tests := []struct {
 		name   string
@@ -20,15 +20,15 @@ func Test_aabb_ContainsPoint(t *testing.T) {
 		args   args
 		want   bool
 	}{
-		{"inside   ", fields{0, 0, 50, 50}, args{XY{0, 0, 0, 1}}, true},
-		{"inside 1 ", fields{0, 0, 50, 50}, args{XY{10, 10, 0, 1}}, true},
-		{"inside 2 ", fields{0, 0, 50, 50}, args{XY{-10, -10, 0, 1}}, true},
-		{"inside 3 ", fields{0, 0, 50, 50}, args{XY{10, -10, 0, 1}}, true},
-		{"inside 4 ", fields{0, 0, 50, 50}, args{XY{-10, 10, 0, 1}}, true},
-		{"outside 1", fields{0, 0, 50, 50}, args{XY{26, 26, 0, 1}}, false},
-		{"outside 2", fields{0, 0, 50, 50}, args{XY{-26, -26, 0, 1}}, false},
-		{"outside 3", fields{0, 0, 50, 50}, args{XY{-26, 26, 0, 1}}, false},
-		{"outside 4", fields{0, 0, 50, 50}, args{XY{26, -26, 0, 1}}, false},
+		{"inside   ", fields{0, 0, 50, 50}, args{Point{0, 0, 0, 1}}, true},
+		{"inside 1 ", fields{0, 0, 50, 50}, args{Point{10, 10, 0, 1}}, true},
+		{"inside 2 ", fields{0, 0, 50, 50}, args{Point{-10, -10, 0, 1}}, true},
+		{"inside 3 ", fields{0, 0, 50, 50}, args{Point{10, -10, 0, 1}}, true},
+		{"inside 4 ", fields{0, 0, 50, 50}, args{Point{-10, 10, 0, 1}}, true},
+		{"outside 1", fields{0, 0, 50, 50}, args{Point{26, 26, 0, 1}}, false},
+		{"outside 2", fields{0, 0, 50, 50}, args{Point{-26, -26, 0, 1}}, false},
+		{"outside 3", fields{0, 0, 50, 50}, args{Point{-26, 26, 0, 1}}, false},
+		{"outside 4", fields{0, 0, 50, 50}, args{Point{26, -26, 0, 1}}, false},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {

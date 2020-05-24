@@ -92,7 +92,7 @@ func Test_BoundaryForNE(t *testing.T) {
 func TestQuadtree_Count(t *testing.T) {
 	type fields struct {
 		boundary   Boundary
-		points     []XY
+		points     []Point
 		northwest  *Quadtree
 		northeast  *Quadtree
 		southwest  *Quadtree

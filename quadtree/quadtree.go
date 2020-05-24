@@ -2,11 +2,11 @@ package quadtree
 
 import "fmt"
 
-const capacity = 4
+const CAPACITY = 4
 
 type Quadtree struct {
 	boundary   Boundary
-	points     []XY
+	points     []Point
 	northwest  *Quadtree
 	northeast  *Quadtree
 	southwest  *Quadtree
@@ -17,7 +17,7 @@ type Quadtree struct {
 
 func NewQuadtree(boundary Boundary, level int) *Quadtree {
 	quadtree := Quadtree{boundary: boundary,
-		points:     make([]XY, 0),
+		points:     make([]Point, 0, CAPACITY),
 		subdivided: false,
 		level:      level}
 
@@ -29,13 +29,13 @@ func (q *Quadtree) GetBoundary() Boundary {
 	return q.boundary
 }
 
-func (q *Quadtree) Insert(point XY) bool {
+func (q *Quadtree) Insert(point Point) bool {
 
 	if !q.boundary.ContainsPoint(point) {
 		return false
 	}
-
-	if len(q.points) < capacity {
+	// add the point if the capicity hasn't been reached
+	if len(q.points) < CAPACITY {
 		point.L = q.level
 		q.points = append(q.points, point)
 		return true
@@ -62,6 +62,7 @@ func (q *Quadtree) Insert(point XY) bool {
 	return true
 }
 
+// create four new boundaries
 func (q *Quadtree) subdivide() {
 	level := q.level + 1
 	q.northeast = NewQuadtree(BoundaryForNE(q.boundary), level)
@@ -99,9 +100,9 @@ func BoundaryForSW(boundary Boundary) Boundary {
 	return NewBoundary(x, y, boundary.w/2, boundary.h/2)
 }
 
-func (q *Quadtree) Query(search Boundary) []XY {
+func (q *Quadtree) Query(search Boundary) []Point {
 
-	pointsFound := make([]XY, 0)
+	pointsFound := make([]Point, 0)
 	if !q.boundary.IntersectsBoundary(search) {
 		return pointsFound
 	}
@@ -155,7 +156,7 @@ func (q *Quadtree) All() []*Quadtree {
 	return quadtrees
 }
 
-func (q *Quadtree) Delete(point XY) {
+func (q *Quadtree) Delete(point Point) {
 	fmt.Println(q.boundary.ContainsPoint(point))
 	if !q.boundary.ContainsPoint(point) {
 		return
@@ -171,7 +172,7 @@ func (q *Quadtree) Delete(point XY) {
 		q.northwest = nil
 		q.southeast = nil
 		q.southwest = nil
-		q.points = make([]XY, 0)
+		q.points = make([]Point, 0)
 		// reinsert the points
 		for _, p := range points {
 			if p != point {
@@ -191,7 +192,7 @@ func (q *Quadtree) Delete(point XY) {
 	return
 }
 
-func contains(s []XY, e XY) (bool, int) {
+func contains(s []Point, e Point) (bool, int) {
 	for i, a := range s {
 		if a == e {
 			return true, i

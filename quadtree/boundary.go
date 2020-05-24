@@ -30,7 +30,7 @@ func (base Boundary) GetJSON() Boundary_json {
 	return Boundary_json{base.x, base.y, base.w, base.h}
 }
 
-func (base Boundary) ContainsPoint(point XY) bool {
+func (base Boundary) ContainsPoint(point Point) bool {
 
 	return ((point.X < base.x+base.w/2 && point.X >= base.x-base.w/2) &&
 		(point.Y < base.y+base.h/2 && point.Y >= base.y-base.h/2))
