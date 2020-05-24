@@ -14,11 +14,9 @@ import (
 	"github.com/cranburyattic/GoQuadTree/quadtree"
 )
 
-var rootQT *quadtree.Quadtree
-
-func init() {
+func initQuadTree() *quadtree.Quadtree {
 	rootBoundary := quadtree.NewBoundary(-2, 54.5, 8, 9)
-	rootQT = quadtree.NewQuadtree(rootBoundary, 0)
+	rootQT := quadtree.NewQuadtree(rootBoundary, 0)
 
 	filePath := "./data.csv"
 
@@ -46,52 +44,55 @@ func init() {
 	}
 
 	fmt.Println("Data Loaded")
+	return rootQT
 }
 
 func enableCors(w *http.ResponseWriter) {
 	(*w).Header().Set("Access-Control-Allow-Origin", "*")
 }
 
-func rectsHandler(w http.ResponseWriter, r *http.Request) {
+func rectsHandler(qt *quadtree.Quadtree) func(rw http.ResponseWriter, r *http.Request) {
+	return func(rw http.ResponseWriter, r *http.Request) {
+		enableCors(&rw)
 
-	enableCors(&w)
+		rects := make([]quadtree.Boundary_json, 0)
 
-	rects := make([]quadtree.Boundary_json, 0)
+		for _, qt := range qt.All() {
+			boundary := qt.GetBoundary()
+			rects = append(rects, boundary.GetJSON())
+		}
 
-	for _, qt := range rootQT.All() {
-		boundary := qt.GetBoundary()
-		rects = append(rects, boundary.GetJSON())
+		output, err := json.MarshalIndent(&rects, "", "\t")
+
+		if err != nil {
+			fmt.Println("Error marshalling to JSON:", err)
+			return
+		}
+
+		rw.Write(output)
 	}
-
-	output, err := json.MarshalIndent(&rects, "", "\t")
-
-	if err != nil {
-		fmt.Println("Error marshalling to JSON:", err)
-		return
-	}
-
-	w.Write(output)
 }
 
-func queryHandler(rw http.ResponseWriter, r *http.Request) {
+func queryHandler(qt *quadtree.Quadtree) func(rw http.ResponseWriter, r *http.Request) {
+	return func(rw http.ResponseWriter, r *http.Request) {
+		enableCors(&rw)
 
-	enableCors(&rw)
+		x, y, w, h, err := getQueryParaams(r.URL.Query())
 
-	x, y, w, h, err := getQueryParaams(r.URL.Query())
+		if err != nil {
+			fmt.Println("Error set query params:", err)
+		}
 
-	if err != nil {
-		fmt.Println("Error set query params:", err)
+		points := qt.Query(quadtree.NewBoundary(x, y, w, h))
+		output, err := json.MarshalIndent(&points, "", "\t")
+
+		if err != nil {
+			fmt.Println("Error marshalling to JSON:", err)
+			return
+		}
+
+		rw.Write(output)
 	}
-
-	points := rootQT.Query(quadtree.NewBoundary(x, y, w, h))
-	output, err := json.MarshalIndent(&points, "", "\t")
-
-	if err != nil {
-		fmt.Println("Error marshalling to JSON:", err)
-		return
-	}
-
-	rw.Write(output)
 }
 
 func getQueryParaams(params url.Values) (float64, float64, float64, float64, error) {
@@ -110,8 +111,10 @@ func getQueryParaams(params url.Values) (float64, float64, float64, float64, err
 
 func main() {
 
+	qt := initQuadTree()
+
 	http.Handle("/", http.FileServer(http.Dir("./static")))
-	http.HandleFunc("/rects", rectsHandler)
-	http.HandleFunc("/query", queryHandler)
+	http.HandleFunc("/rects", rectsHandler(qt))
+	http.HandleFunc("/query", queryHandler(qt))
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }
