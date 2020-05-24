@@ -30,7 +30,7 @@ func (q *Quadtree) GetBoundary() Boundary {
 }
 
 func (q *Quadtree) Insert(point Point) bool {
-
+	// check whether the point fits in the boundary
 	if !q.boundary.ContainsPoint(point) {
 		return false
 	}
@@ -45,7 +45,7 @@ func (q *Quadtree) Insert(point Point) bool {
 		q.subdivide()
 		q.subdivided = true
 	}
-
+	// the point will only be inserted into one of these
 	if q.northwest.Insert(point) {
 		return true
 	}
@@ -58,7 +58,6 @@ func (q *Quadtree) Insert(point Point) bool {
 	if q.southeast.Insert(point) {
 		return true
 	}
-
 	return true
 }
 
@@ -69,7 +68,6 @@ func (q *Quadtree) subdivide() {
 	q.northwest = NewQuadtree(BoundaryForNW(q.boundary), level)
 	q.southeast = NewQuadtree(BoundaryForSE(q.boundary), level)
 	q.southwest = NewQuadtree(BoundaryForSW(q.boundary), level)
-
 }
 
 func BoundaryForNE(boundary Boundary) Boundary {
