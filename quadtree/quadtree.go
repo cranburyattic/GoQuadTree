@@ -5,7 +5,7 @@ import "fmt"
 const capacity = 4
 
 type Quadtree struct {
-	boundary   aabb
+	boundary   Boundary
 	points     []XY
 	northwest  *Quadtree
 	northeast  *Quadtree
@@ -15,7 +15,7 @@ type Quadtree struct {
 	level      int
 }
 
-func NewQuadtree(boundary aabb, level int) *Quadtree {
+func NewQuadtree(boundary Boundary, level int) *Quadtree {
 	quadtree := Quadtree{boundary: boundary,
 		points:     make([]XY, 0),
 		subdivided: false,
@@ -24,7 +24,7 @@ func NewQuadtree(boundary aabb, level int) *Quadtree {
 	return &quadtree
 }
 
-func (q *Quadtree) GetBoundary() aabb {
+func (q *Quadtree) GetBoundary() Boundary {
 
 	return q.boundary
 }
@@ -64,45 +64,45 @@ func (q *Quadtree) Insert(point XY) bool {
 
 func (q *Quadtree) subdivide() {
 	level := q.level + 1
-	q.northeast = NewQuadtree(aabbForNE(q.boundary), level)
-	q.northwest = NewQuadtree(aabbForNW(q.boundary), level)
-	q.southeast = NewQuadtree(aabbForSE(q.boundary), level)
-	q.southwest = NewQuadtree(aabbForSW(q.boundary), level)
+	q.northeast = NewQuadtree(BoundaryForNE(q.boundary), level)
+	q.northwest = NewQuadtree(BoundaryForNW(q.boundary), level)
+	q.southeast = NewQuadtree(BoundaryForSE(q.boundary), level)
+	q.southwest = NewQuadtree(BoundaryForSW(q.boundary), level)
 
 }
 
-func aabbForNE(boundary aabb) aabb {
+func BoundaryForNE(boundary Boundary) Boundary {
 	x := boundary.x + boundary.w/4
 	y := boundary.y + boundary.h/4
 	fmt.Println(x, y)
-	return NewAABB(x, y, boundary.w/2, boundary.h/2)
+	return NewBoundary(x, y, boundary.w/2, boundary.h/2)
 }
 
-func aabbForNW(boundary aabb) aabb {
+func BoundaryForNW(boundary Boundary) Boundary {
 	x := boundary.x - boundary.w/4
 	y := boundary.y + boundary.h/4
 
-	return NewAABB(x, y, boundary.w/2, boundary.h/2)
+	return NewBoundary(x, y, boundary.w/2, boundary.h/2)
 }
 
-func aabbForSE(boundary aabb) aabb {
+func BoundaryForSE(boundary Boundary) Boundary {
 	x := boundary.x + boundary.w/4
 	y := boundary.y - boundary.h/4
 
-	return NewAABB(x, y, boundary.w/2, boundary.h/2)
+	return NewBoundary(x, y, boundary.w/2, boundary.h/2)
 }
 
-func aabbForSW(boundary aabb) aabb {
+func BoundaryForSW(boundary Boundary) Boundary {
 	x := boundary.x - boundary.w/4
 	y := boundary.y - boundary.h/4
 
-	return NewAABB(x, y, boundary.w/2, boundary.h/2)
+	return NewBoundary(x, y, boundary.w/2, boundary.h/2)
 }
 
-func (q *Quadtree) Query(search aabb) []XY {
+func (q *Quadtree) Query(search Boundary) []XY {
 
 	pointsFound := make([]XY, 0)
-	if !q.boundary.IntersectsAABB(search) {
+	if !q.boundary.IntersectsBoundary(search) {
 		return pointsFound
 	}
 

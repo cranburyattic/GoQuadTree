@@ -32,20 +32,20 @@ func Test_aabb_ContainsPoint(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			base := aabb{
+			base := Boundary{
 				x: tt.fields.x,
 				y: tt.fields.y,
 				w: tt.fields.w,
 				h: tt.fields.h,
 			}
 			if got := base.ContainsPoint(tt.args.point); got != tt.want {
-				t.Errorf("aabb.ContainsPoint() = %v, want %v", got, tt.want)
+				t.Errorf("boundary.ContainsPoint() = %v, want %v", got, tt.want)
 			}
 		})
 	}
 }
 
-func Test_aabb_IntersectsAABB(t *testing.T) {
+func Test_Boundary_IntersectsBoundary(t *testing.T) {
 	type fields struct {
 		x float64
 		y float64
@@ -53,7 +53,7 @@ func Test_aabb_IntersectsAABB(t *testing.T) {
 		h float64
 	}
 	type args struct {
-		other aabb
+		other Boundary
 	}
 	tests := []struct {
 		name   string
@@ -61,24 +61,24 @@ func Test_aabb_IntersectsAABB(t *testing.T) {
 		args   args
 		want   bool
 	}{
-		{"match base", fields{0, 0, 50, 50}, args{NewAABB(0, 0, 50, 50)}, true},
-		{"match base", fields{0, 0, 50, 50}, args{NewAABB(-100, -100, 50, 50)}, false},
-		{"match base", fields{0, 0, 50, 50}, args{NewAABB(100, 100, 50, 50)}, false},
-		{"match base", fields{0, 0, 50, 50}, args{NewAABB(-100, -100, 200, 200)}, true},
-		{"match base", fields{0, 0, 50, 50}, args{NewAABB(100, 100, 200, 200)}, true},
-		{"match base", fields{0, 0, 50, 50}, args{NewAABB(-150, -150, 200, 200)}, false},
-		{"match base", fields{0, 0, 50, 50}, args{NewAABB(150, 150, 200, 200)}, false},
+		{"match base", fields{0, 0, 50, 50}, args{NewBoundary(0, 0, 50, 50)}, true},
+		{"match base", fields{0, 0, 50, 50}, args{NewBoundary(-100, -100, 50, 50)}, false},
+		{"match base", fields{0, 0, 50, 50}, args{NewBoundary(100, 100, 50, 50)}, false},
+		{"match base", fields{0, 0, 50, 50}, args{NewBoundary(-100, -100, 200, 200)}, true},
+		{"match base", fields{0, 0, 50, 50}, args{NewBoundary(100, 100, 200, 200)}, true},
+		{"match base", fields{0, 0, 50, 50}, args{NewBoundary(-150, -150, 200, 200)}, false},
+		{"match base", fields{0, 0, 50, 50}, args{NewBoundary(150, 150, 200, 200)}, false},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			base := aabb{
+			base := Boundary{
 				x: tt.fields.x,
 				y: tt.fields.y,
 				w: tt.fields.w,
 				h: tt.fields.h,
 			}
-			if got := base.IntersectsAABB(tt.args.other); got != tt.want {
-				t.Errorf("aabb.IntersectsAABB() = %v, want %v", got, tt.want)
+			if got := base.IntersectsBoundary(tt.args.other); got != tt.want {
+				t.Errorf("Boundary.IntersectsBoundary() = %v, want %v", got, tt.want)
 			}
 		})
 	}

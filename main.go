@@ -10,17 +10,15 @@ import (
 	"net/url"
 	"os"
 	"strconv"
-	"time"
 
-	"github.com/cranburyattic/qt/quadtree"
+	"github.com/cranburyattic/GoQuadTree/quadtree"
 )
 
 var rootQT *quadtree.Quadtree
 
 func init() {
-
-	rootAABB := quadtree.NewAABB(-2, 54.5, 8, 9)
-	rootQT = quadtree.NewQuadtree(rootAABB, 0)
+	rootBoundary := quadtree.NewBoundary(-2, 54.5, 8, 9)
+	rootQT = quadtree.NewQuadtree(rootBoundary, 0)
 
 	filePath := "./data.csv"
 
@@ -58,7 +56,7 @@ func rectsHandler(w http.ResponseWriter, r *http.Request) {
 
 	enableCors(&w)
 
-	rects := make([]quadtree.AABB_JSON, 0)
+	rects := make([]quadtree.Boundary_json, 0)
 
 	for _, qt := range rootQT.All() {
 		aabb := qt.GetBoundary()
@@ -85,9 +83,7 @@ func queryHandler(rw http.ResponseWriter, r *http.Request) {
 		fmt.Println("Error set query params:", err)
 	}
 
-	start := time.Now()
-	points := rootQT.Query(quadtree.NewAABB(x, y, w, h))
-	fmt.Println(time.Since(start))
+	points := rootQT.Query(quadtree.NewBoundary(x, y, w, h))
 	output, err := json.MarshalIndent(&points, "", "\t")
 
 	if err != nil {

@@ -5,85 +5,85 @@ import (
 	"testing"
 )
 
-func Test_aabbForSW(t *testing.T) {
+func Test_BoundaryForSW(t *testing.T) {
 	type args struct {
-		boundary aabb
+		boundary Boundary
 	}
 	tests := []struct {
 		name string
 		args args
-		want aabb
+		want Boundary
 	}{
-		{"match base", args{NewAABB(0, 0, 50, 50)}, NewAABB(-12.5, -12.5, 25, 25)},
-		{"match base", args{NewAABB(-12.5, -12.5, 25, 25)}, NewAABB(-18.75, -18.75, 12.5, 12.5)},
+		{"match base", args{NewBoundary(0, 0, 50, 50)}, NewBoundary(-12.5, -12.5, 25, 25)},
+		{"match base", args{NewBoundary(-12.5, -12.5, 25, 25)}, NewBoundary(-18.75, -18.75, 12.5, 12.5)},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := aabbForSW(tt.args.boundary); !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("aabbForSW() = %v, want %v", got, tt.want)
+			if got := BoundaryForSW(tt.args.boundary); !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("BoundaryForSW() = %v, want %v", got, tt.want)
 			}
 		})
 	}
 }
 
-func Test_aabbForSE(t *testing.T) {
+func Test_BoundaryForSE(t *testing.T) {
 	type args struct {
-		boundary aabb
+		boundary Boundary
 	}
 	tests := []struct {
 		name string
 		args args
-		want aabb
+		want Boundary
 	}{
-		{"match base", args{NewAABB(0, 0, 50, 50)}, NewAABB(12.5, -12.5, 25, 25)},
-		{"match base", args{NewAABB(12.5, -12.5, 25, 25)}, NewAABB(18.75, -18.75, 12.5, 12.5)},
+		{"match base", args{NewBoundary(0, 0, 50, 50)}, NewBoundary(12.5, -12.5, 25, 25)},
+		{"match base", args{NewBoundary(12.5, -12.5, 25, 25)}, NewBoundary(18.75, -18.75, 12.5, 12.5)},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := aabbForSE(tt.args.boundary); !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("aabbForSE() = %v, want %v", got, tt.want)
+			if got := BoundaryForSE(tt.args.boundary); !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("BoundaryForSE() = %v, want %v", got, tt.want)
 			}
 		})
 	}
 }
 
-func Test_aabbForNW(t *testing.T) {
+func Test_BoundaryForNW(t *testing.T) {
 	type args struct {
-		boundary aabb
+		boundary Boundary
 	}
 	tests := []struct {
 		name string
 		args args
-		want aabb
+		want Boundary
 	}{
-		{"match base", args{NewAABB(0, 0, 50, 50)}, NewAABB(-12.5, 12.5, 25, 25)},
-		{"match base", args{NewAABB(-12.5, 12.5, 25, 25)}, NewAABB(-18.75, 18.75, 12.5, 12.5)},
+		{"match base", args{NewBoundary(0, 0, 50, 50)}, NewBoundary(-12.5, 12.5, 25, 25)},
+		{"match base", args{NewBoundary(-12.5, 12.5, 25, 25)}, NewBoundary(-18.75, 18.75, 12.5, 12.5)},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := aabbForNW(tt.args.boundary); !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("aabbForNW() = %v, want %v", got, tt.want)
+			if got := BoundaryForNW(tt.args.boundary); !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("BoundaryForNW() = %v, want %v", got, tt.want)
 			}
 		})
 	}
 }
 
-func Test_aabbForNE(t *testing.T) {
+func Test_BoundaryForNE(t *testing.T) {
 	type args struct {
-		boundary aabb
+		boundary Boundary
 	}
 	tests := []struct {
 		name string
 		args args
-		want aabb
+		want Boundary
 	}{
-		{"match base", args{NewAABB(0, 0, 50, 50)}, NewAABB(12.5, 12.5, 25, 25)},
-		{"match base", args{NewAABB(12.5, 12.5, 25, 25)}, NewAABB(18.75, 18.75, 12.5, 12.5)},
+		{"match base", args{NewBoundary(0, 0, 50, 50)}, NewBoundary(12.5, 12.5, 25, 25)},
+		{"match base", args{NewBoundary(12.5, 12.5, 25, 25)}, NewBoundary(18.75, 18.75, 12.5, 12.5)},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := aabbForNE(tt.args.boundary); !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("aabbForNE() = %v, want %v", got, tt.want)
+			if got := BoundaryForNE(tt.args.boundary); !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("BoundaryForNE() = %v, want %v", got, tt.want)
 			}
 		})
 	}
@@ -91,7 +91,7 @@ func Test_aabbForNE(t *testing.T) {
 
 func TestQuadtree_Count(t *testing.T) {
 	type fields struct {
-		boundary   aabb
+		boundary   Boundary
 		points     []XY
 		northwest  *Quadtree
 		northeast  *Quadtree

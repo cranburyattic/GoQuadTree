@@ -56,9 +56,12 @@ function setup() {
   
   background(51)  
   createCanvas(1000,850)
+  extraCanvas = createCanvas(1000,850);
+  extraCanvas
 }
 
 function draw() {
+
  	background(255);
   rectMode(CENTER);
   stroke(0)
@@ -99,7 +102,6 @@ function draw() {
   }
 
   if(queryPoints) {
-    console.log(queryPoints.length);
     fill(0,0, 255,125)
     for(var i = 0; i < queryPoints.length; i++) {
       var r = queryPoints[i]
@@ -131,15 +133,15 @@ function mouseReleased() {
 }
 
 function mouseDragged() {
-  x = map(mouseX,0, 400, -6, 2)
-  y = map(mouseY,800, 0, 50, 59)
-  w = map(50,0, 400, 0,8)
-  h = map(50,0, 400, 0,8)
+    x = map(mouseX,0, 400, -6, 2)
+    y = map(mouseY,800, 0, 50, 59)
+    w = map(50,0, 400, 0,8)
+    h = map(50,0, 400, 0,8)
 
-  w = map(50, 0, 400, 0, 8)
-  h = map(50, 0, 800, 0, 9)
+    w = map(50, 0, 400, 0, 8)
+    h = map(50, 0, 800, 0, 9)
 
-  if(runQuery) {
-    loadJSON("/query?x=" + x + "&y=" + y + "&w=" + w + "&h=" + h, callbackQuery);
-  }
+    if(runQuery) {
+      loadJSON("/query?x=" + x + "&y=" + y + "&w=" + w + "&h=" + h, callbackQuery);
+    }
 }
