@@ -6,10 +6,10 @@ import (
 
 func Test_aabb_ContainsPoint(t *testing.T) {
 	type fields struct {
-		x float64
-		y float64
-		w float64
-		h float64
+		X float64
+		Y float64
+		W float64
+		H float64
 	}
 	type args struct {
 		point Point
@@ -33,10 +33,10 @@ func Test_aabb_ContainsPoint(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			base := Boundary{
-				x: tt.fields.x,
-				y: tt.fields.y,
-				w: tt.fields.w,
-				h: tt.fields.h,
+				X: tt.fields.X,
+				Y: tt.fields.Y,
+				W: tt.fields.W,
+				H: tt.fields.H,
 			}
 			if got := base.ContainsPoint(tt.args.point); got != tt.want {
 				t.Errorf("boundary.ContainsPoint() = %v, want %v", got, tt.want)
@@ -47,10 +47,10 @@ func Test_aabb_ContainsPoint(t *testing.T) {
 
 func Test_Boundary_IntersectsBoundary(t *testing.T) {
 	type fields struct {
-		x float64
-		y float64
-		w float64
-		h float64
+		X float64
+		Y float64
+		W float64
+		H float64
 	}
 	type args struct {
 		other Boundary
@@ -72,10 +72,10 @@ func Test_Boundary_IntersectsBoundary(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			base := Boundary{
-				x: tt.fields.x,
-				y: tt.fields.y,
-				w: tt.fields.w,
-				h: tt.fields.h,
+				X: tt.fields.X,
+				Y: tt.fields.Y,
+				W: tt.fields.W,
+				H: tt.fields.H,
 			}
 			if got := base.IntersectsBoundary(tt.args.other); got != tt.want {
 				t.Errorf("Boundary.IntersectsBoundary() = %v, want %v", got, tt.want)

@@ -55,11 +55,11 @@ func rectsHandler(qt *quadtree.Quadtree) func(rw http.ResponseWriter, r *http.Re
 	return func(rw http.ResponseWriter, r *http.Request) {
 		enableCors(&rw)
 
-		rects := make([]quadtree.Boundary_json, 0)
+		rects := make([]quadtree.Boundary, 0)
 
 		for _, qt := range qt.All() {
 			boundary := qt.GetBoundary()
-			rects = append(rects, boundary.GetJSON())
+			rects = append(rects, boundary)
 		}
 
 		output, err := json.MarshalIndent(&rects, "", "\t")

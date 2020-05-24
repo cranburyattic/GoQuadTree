@@ -2,7 +2,7 @@ package quadtree
 
 import "fmt"
 
-const CAPACITY = 4
+const CAPACITY = 50
 
 type Quadtree struct {
 	boundary   Boundary
@@ -71,31 +71,31 @@ func (q *Quadtree) subdivide() {
 }
 
 func BoundaryForNE(boundary Boundary) Boundary {
-	x := boundary.x + boundary.w/4
-	y := boundary.y + boundary.h/4
+	x := boundary.X + boundary.W/4
+	y := boundary.Y + boundary.H/4
 	fmt.Println(x, y)
-	return NewBoundary(x, y, boundary.w/2, boundary.h/2)
+	return NewBoundary(x, y, boundary.W/2, boundary.H/2)
 }
 
 func BoundaryForNW(boundary Boundary) Boundary {
-	x := boundary.x - boundary.w/4
-	y := boundary.y + boundary.h/4
+	x := boundary.X - boundary.W/4
+	y := boundary.Y + boundary.H/4
 
-	return NewBoundary(x, y, boundary.w/2, boundary.h/2)
+	return NewBoundary(x, y, boundary.W/2, boundary.H/2)
 }
 
 func BoundaryForSE(boundary Boundary) Boundary {
-	x := boundary.x + boundary.w/4
-	y := boundary.y - boundary.h/4
+	x := boundary.X + boundary.W/4
+	y := boundary.Y - boundary.H/4
 
-	return NewBoundary(x, y, boundary.w/2, boundary.h/2)
+	return NewBoundary(x, y, boundary.W/2, boundary.H/2)
 }
 
 func BoundaryForSW(boundary Boundary) Boundary {
-	x := boundary.x - boundary.w/4
-	y := boundary.y - boundary.h/4
+	x := boundary.X - boundary.W/4
+	y := boundary.Y - boundary.H/4
 
-	return NewBoundary(x, y, boundary.w/2, boundary.h/2)
+	return NewBoundary(x, y, boundary.W/2, boundary.H/2)
 }
 
 func (q *Quadtree) Query(search Boundary) []Point {
