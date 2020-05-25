@@ -5,9 +5,10 @@ type Boundary struct {
 	Y float64 // minimum latiude
 	W float64 // degrees east from minimum longitude
 	H float64 // degress north from minimum latitude
+	L int     // level
 }
 
-// crate a new aabb rectangle
+// crate a new boundary rectangle
 func NewBoundary(x float64, y float64, w float64, h float64) Boundary {
 	boundary := Boundary{
 		X: x,
@@ -20,8 +21,8 @@ func NewBoundary(x float64, y float64, w float64, h float64) Boundary {
 
 func (base Boundary) ContainsPoint(point Point) bool {
 
-	return ((point.X < base.X+base.W/2 && point.X >= base.X-base.W/2) &&
-		(point.Y < base.Y+base.H/2 && point.Y >= base.Y-base.H/2))
+	return (point.X < base.X+base.W/2 && point.X >= base.X-base.W/2) &&
+			(point.Y < base.Y+base.H/2 && point.Y >= base.Y-base.H/2)
 }
 
 func (base Boundary) IntersectsBoundary(other Boundary) bool {

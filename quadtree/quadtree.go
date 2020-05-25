@@ -25,7 +25,7 @@ func NewQuadtree(boundary Boundary, level int) *Quadtree {
 }
 
 func (q *Quadtree) GetBoundary() Boundary {
-
+	q.boundary.L = q.level
 	return q.boundary
 }
 
@@ -34,7 +34,7 @@ func (q *Quadtree) Insert(point Point) bool {
 	if !q.boundary.ContainsPoint(point) {
 		return false
 	}
-	// add the point if the capicity hasn't been reached
+	// add the point if the capacity hasn't been reached
 	if len(q.points) < CAPACITY {
 		point.L = q.level
 		q.points = append(q.points, point)
